@@ -3,11 +3,13 @@
 window.auth = (function() {
     let modal = window.modal;
     let utils = window.utils;
-    let auth = {
-        init: init
+
+    let self = {
+        init: init,
+        toggle: toggle
     };
 
-    let authElements;
+    let elems = {};
 
     function logoutHandler() {
         login('');
@@ -15,42 +17,46 @@ window.auth = (function() {
 
     function submitHandler(event) {
         event.preventDefault();
-        if (login(authElements.loginText.value.trim())) {
-            authElements.loginText.style.borderColor = '';
-            modal.toggle(authElements.modalDialog)();
+        if (login(elems.loginText.value.trim())) {
+            elems.loginText.style.borderColor = '';
+            modal.toggle(elems.modalDialog)();
         } else {
-            authElements.loginText.style.borderColor = 'red';
+            elems.loginText.style.borderColor = 'red';
         }
     }
 
     function login(username) {
         if (username) {
-            authElements.userNameLabel.textContent = username;
-            authElements.loginText.value = '';
+            elems.userNameLabel.textContent = username;
+            elems.loginText.value = '';
 
-            authElements.logoutButton.style.display = 'block';
-            authElements.loginButton.style.display = 'none';
+            elems.logoutButton.style.display = 'block';
+            elems.loginButton.style.display = 'none';
         } else {
-            authElements.userNameLabel.textContent = '';
-            authElements.logoutButton.style.display = 'none';
-            authElements.loginButton.style.display = 'block';
+            elems.userNameLabel.textContent = '';
+            elems.logoutButton.style.display = 'none';
+            elems.loginButton.style.display = 'block';
         }
         localStorage.setItem('delivery-food.username', username);
 
         return username;
     }
 
-    function init(selectors) {
-        authElements = utils.applyFun(selectors, document.querySelector, document);
+    function toggle() {
+        modal.toggle(elems.modalDialog)();
+    }
 
-        authElements.userNameLabel.style.display = 'inline-block';
-        authElements.loginButton.addEventListener('click', modal.toggle(authElements.modalDialog));
-        authElements.closeModalDialog.addEventListener('click', modal.toggle(authElements.modalDialog));
-        authElements.logoutButton.addEventListener('click', logoutHandler);
-        authElements.authForm.addEventListener('submit', submitHandler);
+    function init(selectors) {
+        elems = utils.applySelector(selectors);
+
+        elems.userNameLabel.style.display = 'inline-block';
+        elems.loginButton.addEventListener('click', toggle);
+        elems.closeModalDialog.addEventListener('click', toggle);
+        elems.logoutButton.addEventListener('click', logoutHandler);
+        elems.authForm.addEventListener('submit', submitHandler);
 
         login(localStorage.getItem('delivery-food.username') || '');
     }
 
-    return auth;
+    return self;
 }());

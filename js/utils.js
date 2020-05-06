@@ -1,8 +1,9 @@
 'use strict';
 
 window.utils = (function() {
-    let utils = {
-        applyFun: applyFunction
+    let self = {
+        applyFunction: applyFunction,
+        applySelector: applySelector
     };
 
     function applyFunction(obj, fun, context) {
@@ -13,5 +14,9 @@ window.utils = (function() {
         return res;
     }
 
-    return utils;
+    function applySelector(obj) {
+        return self.applyFunction(obj, document.querySelector, document);
+    }
+
+    return self;
 }());

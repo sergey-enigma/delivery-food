@@ -1,7 +1,7 @@
 'use strict';
 
 window.modal = (function() {
-    let modal = {
+    let self = {
         toggle: toggleModal
     };
 
@@ -11,5 +11,5 @@ window.modal = (function() {
         }
     }
 
-    return modal;
+    return self;
 }());

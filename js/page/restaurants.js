@@ -4,6 +4,7 @@ window.page = window.page || {};
 window.page.restaurants = (function() {
     let goods = window.page.goods;
     let utils = window.utils;
+    let auth = window.auth;
 
     let elems = {
         logo: '.logo',
@@ -64,10 +65,14 @@ window.page.restaurants = (function() {
     function openGoods(event) {
         const restaurant = event.target.closest('.card-restaurant');
         if (restaurant) {
-            self.hide();
+            if (auth.isAuthorized()) {
+                self.hide();
 
-            goods.init(3);
-            goods.show();
+                goods.init(3);
+                goods.show();
+            } else {
+                auth.toggle();
+            }
         }
     }
 

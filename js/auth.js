@@ -6,10 +6,12 @@ window.auth = (function() {
 
     let self = {
         init: init,
-        toggle: toggle
+        toggle: toggle,
+        isAuthorized: isAuthorized
     };
 
     let elems = {};
+    let loginName = '';
 
     function logoutHandler() {
         login('');
@@ -26,6 +28,7 @@ window.auth = (function() {
     }
 
     function login(username) {
+        loginName = username;
         if (username) {
             elems.userNameLabel.textContent = username;
             elems.loginText.value = '';
@@ -42,10 +45,6 @@ window.auth = (function() {
         return username;
     }
 
-    function toggle() {
-        modal.toggle(elems.modalDialog)();
-    }
-
     function init(selectors) {
         elems = utils.applySelector(selectors);
 
@@ -56,6 +55,14 @@ window.auth = (function() {
         elems.authForm.addEventListener('submit', submitHandler);
 
         login(localStorage.getItem('delivery-food.username') || '');
+    }
+
+    function toggle() {
+        modal.toggle(elems.modalDialog)();
+    }
+
+    function isAuthorized() {
+        return !!loginName;
     }
 
     return self;

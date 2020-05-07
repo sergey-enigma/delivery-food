@@ -55,6 +55,7 @@ window.page.restaurants = (function() {
     function show() {
         elems.promo.classList.remove('hide');
         elems.restaurants.classList.remove('hide');
+        window.scrollTo(0, 0);
     }
 
     function hide() {

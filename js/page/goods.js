@@ -29,6 +29,7 @@ window.page.goods = (function() {
 
     function show() {
         elems.menu.classList.remove('hide');
+        window.scrollTo(0, 0);
     }
 
     function hide() {

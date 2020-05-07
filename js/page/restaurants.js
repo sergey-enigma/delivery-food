@@ -23,7 +23,10 @@ window.page.restaurants = (function() {
     function createCard(obj) {
         const { name, image, kitchen, price, stars, products, time_of_delivery: timeOfDelivery } = obj;
         const card = `
-            <a class="card card-restaurant" data-products="${products}">
+            <a class="card card-restaurant"
+                    data-name="${name}" data-stars="${stars}"
+                    data-price="${price}" data-kitchen="${kitchen}"
+                    data-products="${products}">
                 <img src="${image}" alt="image" class="card-image"/>
                 <div class="card-text">
                     <div class="card-heading">
@@ -64,8 +67,7 @@ window.page.restaurants = (function() {
         if (restaurant) {
             if (auth.isAuthorized()) {
                 self.hide();
-                utils.getData('db/' + restaurant.dataset.products)
-                    .then(goods.init);
+                goods.init(restaurant.dataset);
                 goods.show();
             } else {
                 auth.toggle();

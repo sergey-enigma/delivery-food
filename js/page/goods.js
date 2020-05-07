@@ -6,6 +6,7 @@ window.page.goods = (function() {
 
     let elems = {
         menu: '.menu',
+        info: '.menu > .section-heading',
         cards: '.cards-menu'
     };
     elems = utils.applySelector(elems);
@@ -16,9 +17,14 @@ window.page.goods = (function() {
         hide: hide
     };
 
-    function init(list) {
-        elems.cards.textContent = '';
-        list.forEach(createCard);
+    function init(info) {
+        restaurantInfo(info);
+
+        utils.getData('db/' + info.products)
+            .then(function(list) {
+                elems.cards.textContent = '';
+                list.forEach(createCard);
+            });
     }
 
     function show() {
@@ -27,6 +33,18 @@ window.page.goods = (function() {
 
     function hide() {
         elems.menu.classList.add('hide');
+    }
+
+    function restaurantInfo(obj) {
+        const { name, stars, price, kitchen } = obj;
+        elems.info.innerHTML = `
+            <h2 class="section-title restaurant-title">${name}</h2>
+            <div class="card-info">
+                <div class="rating">${stars}</div>
+                <div class="price">От ${price} ₽</div>
+                <div class="category">${kitchen}</div>
+            </div>
+        `;
     }
 
     function createCard(obj) {

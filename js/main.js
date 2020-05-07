@@ -1,6 +1,7 @@
 'use strict';
 
 (function() {
+  let utils = window.utils;
   let auth = window.auth;
   let cart = window.cart;
   let restaurants = window.page.restaurants;
@@ -17,5 +18,7 @@
   };
   auth.init(selectors);
   cart.init();
-  restaurants.init(12);
+
+  utils.getData('db/partners.json')
+    .then(restaurants.init);
 }());

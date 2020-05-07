@@ -20,21 +20,20 @@ window.page.restaurants = (function() {
         hide: hide
     };
 
-    function createCard() {
+    function createCard(obj) {
+        const { name, image, kitchen, price, stars, products, time_of_delivery: timeOfDelivery } = obj;
         const card = `
-            <a class="card card-restaurant">
-                <img src="img/pizza-plus/preview.jpg" alt="image" class="card-image"/>
+            <a class="card card-restaurant" data-products="${products}">
+                <img src="${image}" alt="image" class="card-image"/>
                 <div class="card-text">
                     <div class="card-heading">
-                        <h3 class="card-title">Пицца плюс</h3>
-                        <span class="card-tag tag">50 мин</span>
+                        <h3 class="card-title">${name}</h3>
+                        <span class="card-tag tag">${timeOfDelivery} мин</span>
                     </div>
                     <div class="card-info">
-                        <div class="rating">
-                            4.5
-                        </div>
-                        <div class="price">От 900 ₽</div>
-                        <div class="category">Пицца</div>
+                        <div class="rating">${stars}</div>
+                        <div class="price">От ${price} ₽</div>
+                        <div class="category">${kitchen}</div>
                     </div>
                 </div>
             </a>
@@ -42,11 +41,9 @@ window.page.restaurants = (function() {
         elems.cards.insertAdjacentHTML('beforeend', card);
     }
 
-    function init(count) {
+    function init(list) {
         elems.cards.textContent = '';
-        for (let i = 0; i < count; i++) {
-            createCard();
-        }
+        list.forEach(createCard);
 
         elems.cards.addEventListener('click', openGoods);
         elems.logo.addEventListener('click', openRestaurants);
@@ -67,8 +64,8 @@ window.page.restaurants = (function() {
         if (restaurant) {
             if (auth.isAuthorized()) {
                 self.hide();
-
-                goods.init(3);
+                utils.getData('db/' + restaurant.dataset.products)
+                    .then(goods.init);
                 goods.show();
             } else {
                 auth.toggle();

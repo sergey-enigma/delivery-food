@@ -16,11 +16,9 @@ window.page.goods = (function() {
         hide: hide
     };
 
-    function init(count) {
+    function init(list) {
         elems.cards.textContent = '';
-        for (let i = 0; i < count; i++) {
-            createCard();
-        }
+        list.forEach(createCard);
     }
 
     function show() {
@@ -31,26 +29,27 @@ window.page.goods = (function() {
         elems.menu.classList.add('hide');
     }
 
-    function createCard() {
+    function createCard(obj) {
+        const { id, name, description, image, price } = obj;
+
         const card = document.createElement('div');
+        card.id = id;
         card.className = 'card';
         card.insertAdjacentHTML('beforeend', `
-            <img src="img/pizza-plus/pizza-classic.jpg" alt="image" class="card-image"/>
+            <img src="${image}" alt="image" class="card-image"/>
             <div class="card-text">
                 <div class="card-heading">
-                    <h3 class="card-title card-title-reg">Пицца Классика</h3>
+                    <h3 class="card-title card-title-reg">${name}</h3>
                 </div>
                 <div class="card-info">
-                    <div class="ingredients">
-                        Соус томатный, сыр «Моцарелла», сыр «Пармезан», ветчина, салями, грибы.
-                    </div>
+                    <div class="ingredients">${description}</div>
                 </div>
                 <div class="card-buttons">
                     <button class="button button-primary button-add-cart">
                         <span class="button-card-text">В корзину</span>
                         <span class="button-cart-svg"></span>
                     </button>
-                    <strong class="card-price-bold">510 ₽</strong>
+                    <strong class="card-price-bold">${price} ₽</strong>
                 </div>
             </div>
         `);

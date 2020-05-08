@@ -3,6 +3,7 @@
 window.auth = (function() {
     let modal = window.modal;
     let utils = window.utils;
+    let cart = window.cart;
 
     let self = {
         init: init,
@@ -33,12 +34,14 @@ window.auth = (function() {
             elems.userNameLabel.textContent = username;
             elems.loginText.value = '';
 
-            elems.logoutButton.style.display = 'block';
+            elems.logoutButton.style.display = 'flex';
             elems.loginButton.style.display = 'none';
+            cart.visible(true);
         } else {
             elems.userNameLabel.textContent = '';
             elems.logoutButton.style.display = 'none';
-            elems.loginButton.style.display = 'block';
+            elems.loginButton.style.display = 'flex';
+            cart.visible(false);
         }
         localStorage.setItem('delivery-food.username', username);
 

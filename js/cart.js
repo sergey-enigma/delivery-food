@@ -29,6 +29,8 @@ window.cart = (function() {
         elems.modalBody.addEventListener('click', changeCount);
         elems.cancel.addEventListener('click', cancel);
 
+        products = JSON.parse(localStorage.getItem('delivery-food.cart')) || [];
+
         render();
     }
 
@@ -47,6 +49,8 @@ window.cart = (function() {
         } else {
             products.push(product);
         }
+
+        localStorage.setItem('delivery-food.cart', JSON.stringify(products));
 
         render();
     }
@@ -97,6 +101,7 @@ window.cart = (function() {
             if (target.classList.contains('counter-plus')) {
                 food.count++;
             }
+            localStorage.setItem('delivery-food.cart', JSON.stringify(products));
 
             render();
         }
@@ -104,6 +109,7 @@ window.cart = (function() {
 
     function cancel() {
         products.length = 0;
+        localStorage.removeItem('delivery-food.cart');
         render();
     }
 
